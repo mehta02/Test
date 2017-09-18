@@ -1,0 +1,11 @@
+---
+# vars file for CentOS give version=2.2 or 2.4 of Apache2
+
+apache_centos:
+  - httpd{{version}}
+
+
+# vars file for Ubuntu give version=2.2 or 2.4 of Apache2
+
+apache_ubuntu:
+  - apache{{version}} 

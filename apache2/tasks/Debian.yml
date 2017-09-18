@@ -1,0 +1,10 @@
+---
+
+- name: Installing Apache
+  apt: name={{item}} state=present update_cache=yes 
+  with_items: 
+    - apache2
+    - python
+
+  notify: 
+    - apache2 restart
