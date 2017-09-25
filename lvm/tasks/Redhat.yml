@@ -1,0 +1,4 @@
+---
+
+- name: Install lvm2
+  yum: name=lvm2 state=present 

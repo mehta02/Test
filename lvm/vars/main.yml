@@ -1,0 +1,8 @@
+---
+# vars file for lvm
+
+disk_name: /dev/xvdf
+group_name: lvm_grp
+size: 2G
+volume_name: test2
+

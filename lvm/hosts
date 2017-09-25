@@ -1,0 +1,4 @@
+---
+[webserver]
+#52.87.175.210 ansible_user=ubuntu
+54.173.67.190 ansible_user=ec2-user

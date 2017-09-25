@@ -1,0 +1,24 @@
+---
+# tasks file for lvm
+
+- name: Install lvm
+  include: Debian.yml
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu' 
+  
+- name: Install lvm
+  include: Redhat.yml
+  when: ansible_os_family == 'CentOS' or ansible_os_family == 'RedHat'
+
+- name: Create Physical Volume
+  become: true
+  command: pvcreate {{disk_name}}
+
+
+- name: Create Volume Group
+  become: true
+  command: vgcreate {{group_name}} {{disk_name}}
+
+- name: Create Logical Volume
+  become: true
+  command: lvcreate -L {{size}} -n {{volume_name}} {{group_name}}
+

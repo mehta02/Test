@@ -1,0 +1,10 @@
+---
+# defaults file for lvm
+
+
+#disk_name: /dev/xvdf1 
+#group_name: lvm_grp 
+#size: 2G 
+#volume_name: test1
+
+

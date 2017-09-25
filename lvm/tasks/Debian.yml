@@ -1,0 +1,4 @@
+---
+
+- name: Install lvm2
+  apt: name=lvm2 state=present update_cache=yes
