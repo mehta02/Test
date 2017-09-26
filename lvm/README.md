@@ -12,8 +12,7 @@ None
 Role Variables
 --------------
 
-Defined in defaults
-
+Defined in defaults and vars
 
 Dependencies
 ------------
