@@ -1,0 +1,43 @@
+---
+
+- name: Find is java is already installed
+  shell: which java
+  register: java_task_installed
+  failed_when: no
+
+- name: Add the ppa repo for Java 7
+  apt_repository:
+    repo: ppa:openjdk-r/ppa
+    state: present
+  become: true
+
+# Update Cache of the system
+- name: Update Cache
+  become: true
+  apt:
+    update_cache: yes
+    cache_valid_time: 84600
+    dpkg_options: 'force-confold,force-confdef'
+  tags: update_cache
+
+# get Java Home path
+- name: get the Java_home path
+  shell: sudo update-java-alternatives -l | awk '{print $3}'
+  register: JAVA_HOME
+  tags: getting_java_home
+
+#Install Java Kit
+- name: Ensure Java Development Kit is Installed
+  become: true
+  apt: 
+    name: openjdk-7-jdk
+    state: present
+  tags: java_installation
+
+- name: Install Logstash.
+  include: setup-Debian.yml
+
+- name: restart logstash
+  service:
+    name: logstash
+    state: restarted 

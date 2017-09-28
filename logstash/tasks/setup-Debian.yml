@@ -1,0 +1,66 @@
+---
+#- name: Add the repository for Java 8
+#  get_url:  
+#    url: https://launchpad.net/~webupd8team/+archive/ubuntu/java 
+#    dest: /usr/lib/jvm/java-1.8.0-openjdk-amd64
+#  become: true
+
+- name: Add webupd8team PPA repository
+  apt_repository:
+    repo: 'ppa:webupd8team/java'
+
+- name: Accpet Java 8 License.
+  become: true
+  debconf: name='oracle-java8-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
+  
+
+- name: Ensure Java 8 is installed
+  apt: 
+    pkg: oracle-java8-installer
+    state: present
+    update_cache: yes
+  become: true
+  tags: java8_installer
+
+#Update Cache of the system
+- name: Update Cache
+  become: true
+  apt: 
+    update_cache: yes
+    cache_valid_time: 84600
+    dpkg_options: 'force-confold,force-confdef'
+  tags: update_cache
+
+#get Java Home path
+- name: get the Java_Home path
+  shell: sudo update-java-alternatives -l | awk '{print $3}'
+  register: JAVA_HOME
+  tags: getting_java_home
+
+- name: Add Elasticsearch apt key
+  apt_key:
+    url: http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+    state: present
+
+- name: Add Logstash repository.
+  apt_repository:
+    repo: 'deb http://packages.elasticsearch.org/logstash/2.3/debian stable main'
+    state: present
+
+- name: Check if logstash is already installed
+  stat: 
+    path: /etc/init.d/logstash
+  register: logstash_installed
+
+- name: Update Cache if repository just added.
+  apt: 
+    update_cache: yes
+  when: logstash_installed.stat.exists == false
+
+- name: Install logstash
+  apt: 
+    pkg: logstash
+    state: present
+    update_cache: yes
+    cache_valid_time: 84600
+    dpkg_options: 'force-confold,force-confdef'

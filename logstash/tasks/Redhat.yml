@@ -1,0 +1,26 @@
+---
+# check whether java is installed
+- name: determine if Java is already installed
+  shell: which java
+  register: java_task_installed
+  changed_when: java_task_installed.rc != 0
+  failed_when: no
+
+# install java kit
+- name: Ensure Java Development Kit is Installed
+  become: true
+  yum: pkg=java-1.7.0-openjdk-devel state=installed
+  tags: java_installation
+
+- name: get the java_path
+  shell: sudo update-java-alternatives -l | awk '{print $3}'
+  register: java_path
+  tags: getting_java_home
+
+- name: Install Logstash.
+  include: setup-Redhat.yml
+
+- name: restart logstash
+  systemd: 
+    name: logstash
+    state: restarted 
