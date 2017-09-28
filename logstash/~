@@ -1,3 +1,0 @@
-[webserver]
-54.152.194.24 ansible_user=ec2user
-#52.221.249.209 ansible_user=ubuntu
